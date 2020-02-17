@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomSheetArrow">
+        <attr name="ba_progress" format="float"/>
+        <attr name="ba_width_ration" format="float"/>
+        <attr name="ba_color" format="color"/>
+        <attr name="ba_arrow_width" format="float"/>
+    </declare-styleable>
+
+    <declare-styleable name="ChupaChupsView">
+        <attr name="chupa_padding" format="integer"/>
+        <attr name="chupa_progress" format="float"/>
+        <attr name="chupa_body_color" format="color"/>
+        <attr name="chupa_stick_color" format="color"/>
+    </declare-styleable>
+
+</resources>
