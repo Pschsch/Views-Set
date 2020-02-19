@@ -1,21 +1,19 @@
 package com.pschsch.viewsset.chupachups
 
 import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.GradientDrawable
-import android.renderscript.Sampler
 import android.util.AttributeSet
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
 import com.pschsch.viewsset.R
 
 class ChupaChupsView : FrameLayout {
@@ -52,8 +50,8 @@ class ChupaChupsView : FrameLayout {
     private var pickingAnimator = pickingAnimator()
 
     private val shadowDrawable = GradientDrawable(
-        GradientDrawable.Orientation.TOP_BOTTOM,
-        intArrayOf(Color.parseColor("#FFc2c2c2"), Color.parseColor("#00c2c2c2"))
+            GradientDrawable.Orientation.TOP_BOTTOM,
+            intArrayOf(Color.parseColor("#FFc2c2c2"), Color.parseColor("#00c2c2c2"))
     ).apply {
         shape = GradientDrawable.OVAL
         gradientType = GradientDrawable.RADIAL_GRADIENT
@@ -121,22 +119,28 @@ class ChupaChupsView : FrameLayout {
             val a = context.obtainStyledAttributes(it, R.styleable.ChupaChupsView)
             try {
                 chupaChupsPaddingInternal = a.getInt(
-                    R.styleable.ChupaChupsView_chupa_padding,
-                    DEFAULT_CHUPA_CHUPS_INTERNAL_PADDING
+                        R.styleable.ChupaChupsView_chupa_padding,
+                        DEFAULT_CHUPA_CHUPS_INTERNAL_PADDING
                 )
                 chupaChupsProgress = a.getFloat(R.styleable.ChupaChupsView_chupa_progress, 0f)
                 bodyPaint.color = a.getColor(
-                    R.styleable.ChupaChupsView_chupa_body_color,
-                    DEFAULT_CHUPA_CHUPS_BODY_COLOR
+                        R.styleable.ChupaChupsView_chupa_body_color,
+                        DEFAULT_CHUPA_CHUPS_BODY_COLOR
                 )
                 stickPaint.color = a.getColor(
-                    R.styleable.ChupaChupsView_chupa_stick_color,
-                    DEFAULT_CHUPA_CHUPS_STICK_COLOR
+                        R.styleable.ChupaChupsView_chupa_stick_color,
+                        DEFAULT_CHUPA_CHUPS_STICK_COLOR
                 )
             } finally {
                 a.recycle()
             }
         }
+    }
+    
+    fun setColor(@ColorInt body: Int, @ColorInt stick: Int) {
+        bodyPaint.color = body
+        stickPaint.color = stick
+        invalidate()
     }
 
     /**Contract: height = 1.4 * width, circle radius => contentView size = width*/
@@ -155,9 +159,9 @@ class ChupaChupsView : FrameLayout {
             }
             else -> {
                 measuredWidth =
-                    (DEFAULT_CHUPA_CHUPS_WIDTH_DP * densityDpi).toInt() + chupaChupsPadding
+                        (DEFAULT_CHUPA_CHUPS_WIDTH_DP * densityDpi).toInt() + chupaChupsPadding
                 measuredHeight =
-                    (DEFAULT_CHUPA_CHUPS_WIDTH_DP * densityDpi * 1.4f).toInt() + chupaChupsPadding
+                        (DEFAULT_CHUPA_CHUPS_WIDTH_DP * densityDpi * 1.4f).toInt() + chupaChupsPadding
                 setMeasuredDimension(measuredWidth, measuredHeight)
             }
         }
@@ -196,10 +200,10 @@ class ChupaChupsView : FrameLayout {
         shadowDrawable.gradientRadius = (ovalBoundsBorderRight - ovalBoundsBorderLeft) / 1.6f
 
         shadowDrawable.setBounds(
-            ovalBoundsBorderLeft.toInt(),
-            ovalBoundsBorderTop.toInt(),
-            ovalBoundsBorderRight.toInt(),
-            ovalBoundsBorderBottom.toInt()
+                ovalBoundsBorderLeft.toInt(),
+                ovalBoundsBorderTop.toInt(),
+                ovalBoundsBorderRight.toInt(),
+                ovalBoundsBorderBottom.toInt()
         )
     }
 
@@ -213,37 +217,37 @@ class ChupaChupsView : FrameLayout {
 
     override fun onDraw(canvas: Canvas) {
         val firstHeight =
-            width - chupaChupsPadding / 2 - chupaChupsPadding / 2 * chupaChupsProgressInternal + (width * 0.015f)
+                width - chupaChupsPadding / 2 - chupaChupsPadding / 2 * chupaChupsProgressInternal + (width * 0.015f)
         val lastHeight =
-            height - chupaChupsPadding / 2 - chupaChupsPadding / 2 * chupaChupsProgressInternal
+                height - chupaChupsPadding / 2 - chupaChupsPadding / 2 * chupaChupsProgressInternal
         val halfOfHeight = lastHeight - (lastHeight - firstHeight)
         shadowDrawable.draw(canvas)
         canvas.drawPoint(
-            width / 2.toFloat(),
-            (height - chupaChupsPadding / 2f),
-            stickShadowPaint
+                width / 2.toFloat(),
+                (height - chupaChupsPadding / 2f),
+                stickShadowPaint
         )
         canvas.drawCircle(
-            width / 2.toFloat(),
-            width / 2f - chupaChupsPadding / 2 * chupaChupsProgressInternal,
-            width / 2f - chupaChupsPadding / 2,
-            bodyPaint
+                width / 2.toFloat(),
+                width / 2f - chupaChupsPadding / 2 * chupaChupsProgressInternal,
+                width / 2f - chupaChupsPadding / 2,
+                bodyPaint
         )
         stickPaint.strokeCap = Paint.Cap.SQUARE
         canvas.drawLine(
-            width / 2.toFloat(),
-            firstHeight,
-            width / 2.toFloat(),
-            halfOfHeight,
-            stickPaint
+                width / 2.toFloat(),
+                firstHeight,
+                width / 2.toFloat(),
+                halfOfHeight,
+                stickPaint
         )
         stickPaint.strokeCap = Paint.Cap.ROUND
         canvas.drawLine(
-            width / 2.toFloat(),
-            halfOfHeight,
-            width / 2.toFloat(),
-            lastHeight,
-            stickPaint
+                width / 2.toFloat(),
+                halfOfHeight,
+                width / 2.toFloat(),
+                lastHeight,
+                stickPaint
         )
     }
 
@@ -259,13 +263,13 @@ class ChupaChupsView : FrameLayout {
     }
 
     private fun cancelPickingAnimator(): Animator =
-        ValueAnimator.ofFloat(chupaChupsProgressInternal, 0f).apply {
-            addUpdateListener {
-                val value = (it.animatedValue as Float)
-                chupaChupsProgress = value
+            ValueAnimator.ofFloat(chupaChupsProgressInternal, 0f).apply {
+                addUpdateListener {
+                    val value = (it.animatedValue as Float)
+                    chupaChupsProgress = value
+                }
+                duration = 250
             }
-            duration = 250
-        }
 
     private fun basePickingAnimator(): ValueAnimator = ValueAnimator.ofFloat(0.9f, 0.5f)
 
